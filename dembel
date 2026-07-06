@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Дембель для альтернативщиков</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #2b2b1f;
+            background-image:
+                radial-gradient(ellipse at 20% 50%, #3d3d2b 0%, transparent 70%),
+                radial-gradient(ellipse at 80% 50%, #3d3d2b 0%, transparent 70%),
+                linear-gradient(180deg, #1e2a1e 0%, #2b2b1f 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e8e4d8;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .app-container {
+            max-width: 820px;
+            width: 100%;
+            background: rgba(30, 38, 28, 0.85);
+            backdrop-filter: blur(4px);
+            border: 2px solid #7a8a6c;
+            border-radius: 40px 40px 30px 30px;
+            padding: 30px 30px 40px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 215, 140, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            height: 6px;
+            background: linear-gradient(90deg, #8b7a3e, #c9a84c, #8b7a3e);
+            border-radius: 40px 40px 0 0;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .emblem {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 6px;
+        }
+
+        .star {
+            font-size: 42px;
+            color: #c9a84c;
+            text-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+            line-height: 1;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #f5e6b0, #c9a84c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            color: #a8b89a;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            opacity: 0.8;
+        }
+
+        /* ===== SETTINGS PANEL ===== */
+        .settings-panel {
+            background: rgba(20, 28, 18, 0.7);
+            border: 1px solid #4a5a3c;
+            border-radius: 20px;
+            padding: 18px 22px;
+            margin-bottom: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 16px 20px;
+            transition: all 0.3s;
+        }
+
+        .settings-panel .field {
+            flex: 1 1 160px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .settings-panel label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a8b89a;
+            font-weight: 600;
+        }
+
+        .settings-panel input,
+        .settings-panel select {
+            background: rgba(10, 16, 8, 0.7);
+            border: 1px solid #4a5a3c;
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: #e8e4d8;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border 0.3s;
+            outline: none;
+            width: 100%;
+        }
+
+        .settings-panel input:focus,
+        .settings-panel select:focus {
+            border-color: #c9a84c;
+        }
+
+        .settings-panel input[type="date"] {
+            color-scheme: dark;
+        }
+
+        .settings-panel .btn-set {
+            flex: 0 0 auto;
+            background: #c9a84c;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 28px;
+            font-weight: 700;
+            font-size: 15px;
+            color: #1e2a1e;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: inherit;
+            box-shadow: 0 4px 0 #7a6a2e;
+        }
+
+        .settings-panel .btn-set:hover {
+            background: #dbb95e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #7a6a2e;
+        }
+
+        .settings-panel .btn-set:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #7a6a2e;
+        }
+
+        /* ===== COUNTDOWN ===== */
+        .countdown-section {
+            text-align: center;
+            margin: 10px 0 24px;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            background: rgba(10, 16, 8, 0.6);
+            border: 1px solid #4a5a3c;
+            border-radius: 18px;
+            padding: 12px 6px 10px;
+            transition: border 0.3s;
+        }
+
+        .countdown-item .number {
+            font-size: 48px;
+            font-weight: 700;
+            font-family: 'Times New Roman', serif;
+            color: #f5e6b0;
+            line-height: 1;
+            letter-spacing: 2px;
+        }
+
+        .countdown-item .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #8a9a7a;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        .countdown-item.highlight .number {
+            color: #c9a84c;
+            text-shadow: 0 0 30px rgba(201, 168, 76, 0.2);
+        }
+
+        /* ===== PROGRESS ===== */
+        .progress-section {
+            margin: 12px 0 24px;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #a8b89a;
+            margin-bottom: 6px;
+            padding: 0 4px;
+        }
+
+        .progress-stats span:last-child {
+            color: #c9a84c;
+            font-weight: 600;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 12px;
+            background: rgba(10, 16, 8, 0.7);
+            border-radius: 20px;
+            border: 1px solid #3a4a2c;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #5a7a3a, #c9a84c);
+            border-radius: 20px;
+            transition: width 0.6s ease;
+            box-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+        }
+
+        .progress-fill.complete {
+            background: linear-gradient(90deg, #c9a84c, #f5e6b0);
+            animation: pulse-gold 1.2s infinite;
+        }
+
+        @keyframes pulse-gold {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(201, 168, 76, 0.7);
+            }
+        }
+
+        /* ===== STATUS MESSAGE ===== */
+        .status-message {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            margin: 12px 0 18px;
+            padding: 12px 20px;
+            border-radius: 16px;
+            background: rgba(20, 28, 18, 0.5);
+            border: 1px solid #3a4a2c;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .status-message .emoji {
+            font-size: 28px;
+        }
+
+        .status-message .highlight-text {
+            color: #f5e6b0;
+            font-weight: 700;
+        }
+
+        /* ===== DEMOB ORDER ===== */
+        .order-section {
+            margin-top: 24px;
+            padding: 20px 24px;
+            background: rgba(20, 28, 18, 0.6);
+            border: 1px solid #4a5a3c;
+            border-radius: 20px;
+            position: relative;
+            transition: all 0.5s;
+        }
+
+        .order-section .order-title {
+            font-family: 'Times New Roman', serif;
+            font-size: 20px;
+            text-align: center;
+            color: #c9a84c;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .order-section .order-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #d0d4c8;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .order-section .order-text .name-placeholder {
+            color: #f5e6b0;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        .order-section .order-sign {
+            text-align: right;
+            margin-top: 12px;
+            font-size: 13px;
+            color: #8a9a7a;
+            border-top: 1px solid #3a4a2c;
+            padding-top: 12px;
+        }
+
+        /* ===== CELEBRATION OVERLAY ===== */
+        .celebration-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            animation: fade-in 0.6s;
+        }
+
+        .celebration-overlay.active {
+            display: flex;
+        }
+
+        .celebration-card {
+            background: linear-gradient(145deg, #2b3a28, #1a2618);
+            border: 3px solid #c9a84c;
+            border-radius: 50px;
+            padding: 40px 50px;
+            max-width: 520px;
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(201, 168, 76, 0.2);
+            animation: pop-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .celebration-card .big-emoji {
+            font-size: 80px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .celebration-card h2 {
+            font-family: 'Times New Roman', serif;
+            font-size: 36px;
+            color: #f5e6b0;
+            margin: 8px 0;
+        }
+
+        .celebration-card p {
+            color: #c0c8b0;
+            font-size: 18px;
+            margin: 12px 0 20px;
+            line-height: 1.6;
+        }
+
+        .celebration-card .btn-close-celebrate {
+            background: #c9a84c;
+            border: none;
+            border-radius: 30px;
+            padding: 14px 40px;
+            font-weight: 700;
+            font-size: 18px;
+            color: #1e2a1e;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 4px 0 #7a6a2e;
+        }
+
+        .celebration-card .btn-close-celebrate:hover {
+            background: #dbb95e;
+            transform: scale(1.03);
+        }
+
+        /* ===== CONFETTI (simple CSS) ===== */
+        .confetti-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -20px;
+            animation: confetti-fall linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg) scale(0.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pop-in {
+            0% {
+                transform: scale(0.6);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .app-container {
+                padding: 20px 16px 30px;
+                border-radius: 28px;
+            }
+            .header h1 {
+                font-size: 22px;
+                letter-spacing: 1px;
+            }
+            .star {
+                font-size: 30px;
+            }
+            .countdown-item .number {
+                font-size: 34px;
+            }
+            .countdown-grid {
+                gap: 8px;
+            }
+            .settings-panel {
+                padding: 14px 16px;
+                gap: 12px;
+            }
+            .settings-panel .field {
+                flex: 1 1 100%;
+            }
+            .settings-panel .btn-set {
+                width: 100%;
+                justify-content: center;
+            }
+            .order-section {
+                padding: 16px;
+            }
+            .celebration-card {
+                padding: 30px 24px;
+                margin: 20px;
+            }
+            .celebration-card h2 {
+                font-size: 28px;
+            }
+            .status-message {
+                font-size: 15px;
+                padding: 10px 14px;
+            }
+            .progress-stats {
+                font-size: 12px;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .countdown-item .number {
+                font-size: 26px;
+            }
+            .countdown-item .label {
+                font-size: 9px;
+            }
+            .header h1 {
+                font-size: 18px;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            background: #1e2a1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a5a3c;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5a6a4c;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== MAIN APP ===== -->
+    <div class="app-container" id="app">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="emblem">
+                <span class="star">★</span>
+                <h1>Дембель АГС</h1>
+                <span class="star">★</span>
+            </div>
+            <div class="subtitle">Альтернативная гражданская служба</div>
+        </div>
+
+        <!-- Settings -->
+        <div class="settings-panel" id="settingsPanel">
+            <div class="field">
+                <label for="startDate">Дата начала службы</label>
+                <input type="date" id="startDate" />
+            </div>
+            <div class="field">
+                <label for="serviceType">Срок службы</label>
+                <select id="serviceType">
+                    <option value="18">18 месяцев (540 дней)</option>
+                    <option value="21" selected>21 месяц (630 дней)</option>
+                </select>
+            </div>
+            <button class="btn-set" id="btnSet">Обновить</button>
+        </div>
+
+        <!-- Countdown -->
+        <div class="countdown-section">
+            <div class="countdown-grid" id="countdownGrid">
+                <div class="countdown-item highlight">
+                    <div class="number" id="days">--</div>
+                    <div class="label">Дней</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="number" id="hours">--</div>
+                    <div class="label">Часов</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="number" id="minutes">--</div>
+                    <div class="label">Минут</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="number" id="seconds">--</div>
+                    <div class="label">Секунд</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-section">
+            <div class="progress-stats">
+                <span>Прогресс службы</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- Status Message -->
+        <div class="status-message" id="statusMessage">
+            <span class="emoji">⏳</span>
+            <span>Укажите дату начала и нажмите <strong style="color:#c9a84c;">«Обновить»</strong></span>
+        </div>
+
+        <!-- Demobilization Order -->
+        <div class="order-section" id="orderSection">
+            <div class="order-title">★ Приказ о демобилизации ★</div>
+            <div class="order-text" id="orderText">
+                «Гражданин <span class="name-placeholder">[альтернативщик]</span>,
+                проходящий альтернативную гражданскую службу,
+                <span id="orderStatus">освобождается от исполнения трудовых обязанностей</span>
+                по истечении установленного срока.»
+            </div>
+            <div class="order-sign" id="orderSign">
+                — Начальник отдела кадров АГС
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== CELEBRATION OVERLAY ===== -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-card">
+            <span class="big-emoji">🎉</span>
+            <h2>Дембель, брат!</h2>
+            <p>
+                Ты успешно завершил альтернативную гражданскую службу!<br />
+                <span style="color:#c9a84c;font-weight:600;">Свобода!</span>
+            </p>
+            <button class="btn-close-celebrate" id="btnCelebrateClose">✧ Спасибо за службу! ✧</button>
+        </div>
+    </div>
+
+    <!-- ===== CONFETTI CONTAINER ===== -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <script>
+        // ============================================================
+        //  CONFIG
+        // ============================================================
+        const CONFIG = {
+            // default: 21 months from today - 21 days (just for demo)
+            defaultStartDate: null, // will be set below
+            defaultMonths: 21,
+        };
+
+        // Set default start date to 21 months ago from today (so it shows some progress)
+        const d = new Date();
+        d.setMonth(d.getMonth() - 21);
+        d.setDate(d.getDate() + 5); // a little offset so it's not exactly 0%
+        CONFIG.defaultStartDate = d.toISOString().split('T')[0];
+
+        // ============================================================
+        //  STATE
+        // ============================================================
+        let state = {
+            startDate: CONFIG.defaultStartDate,
+            serviceMonths: CONFIG.defaultMonths,
+            endDate: null,
+            totalDays: 0,
+            elapsedDays: 0,
+            remainingDays: 0,
+            percent: 0,
+            isComplete: false,
+        };
+
+        // ============================================================
+        //  DOM REFS
+        // ============================================================
+        const $ = (id) => document.getElementById(id);
+        const dom = {
+            startDate: $('startDate'),
+            serviceType: $('serviceType'),
+            btnSet: $('btnSet'),
+            days: $('days'),
+            hours: $('hours'),
+            minutes: $('minutes'),
+            seconds: $('seconds'),
+            progressFill: $('progressFill'),
+            progressPercent: $('progressPercent'),
+            statusMessage: $('statusMessage'),
+            orderStatus: $('orderStatus'),
+            celebrationOverlay: $('celebrationOverlay'),
+            btnCelebrateClose: $('btnCelebrateClose'),
+            confettiContainer: $('confettiContainer'),
+        };
+
+        // ============================================================
+        //  HELPERS
+        // ============================================================
+        function pad(n) { return String(n).padStart(2, '0'); }
+
+        function pluralDays(n) {
+            if (n % 10 === 1 && n % 100 !== 11) return 'день';
+            if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return 'дня';
+            return 'дней';
+        }
+
+        function getDaysInMonth(year, month) {
+            return new Date(year, month, 0).getDate();
+        }
+
+        function addMonths(date, months) {
+            const d = new Date(date);
+            d.setMonth(d.getMonth() + months);
+            return d;
+        }
+
+        function diffDays(a, b) {
+            // absolute difference in days
+            const t1 = new Date(a);
+            const t2 = new Date(b);
+            const diff = (t2 - t1) / (1000 * 60 * 60 * 24);
+            return Math.floor(diff);
+        }
+
+        function isToday(date) {
+            const d = new Date(date);
+            const now = new Date();
+            return d.getFullYear() === now.getFullYear() &&
+                d.getMonth() === now.getMonth() &&
+                d.getDate() === now.getDate();
+        }
+
+        // ============================================================
+        //  UPDATE FUNCTION
+        // ============================================================
+        function updateApp() {
+            const now = new Date();
+            const start = new Date(state.startDate);
+            const months = state.serviceMonths;
+
+            // Calculate end date
+            const end = addMonths(start, months);
+            state.endDate = end;
+
+            // Total days (exclude start day, include end day? we count from start day + 1)
+            // We'll count full days between start and end, excluding start day
+            const totalDays = diffDays(start, end);
+            state.totalDays = totalDays;
+
+            // Elapsed days from start to now (excluding start day)
+            let elapsed = diffDays(start, now);
+            if (elapsed < 0) elapsed = 0;
+            if (elapsed > totalDays) elapsed = totalDays;
+            state.elapsedDays = elapsed;
+
+            const remaining = totalDays - elapsed;
+            state.remainingDays = remaining;
+            state.isComplete = remaining <= 0;
+
+            // Percent
+            let percent = totalDays > 0 ? (elapsed / totalDays) * 100 : 0;
+            if (percent > 100) percent = 100;
+            if (percent < 0) percent = 0;
+            state.percent = percent;
+
+            // ---- Update UI ----
+
+            // Countdown numbers
+            let daysVal = remaining;
+            let hoursVal = 0,
+                minutesVal = 0,
+                secondsVal = 0;
+
+            if (!state.isComplete) {
+                const ms = end.getTime() - now.getTime();
+                const totalSec = Math.floor(ms / 1000);
+                daysVal = Math.floor(totalSec / 86400);
+                hoursVal = Math.floor((totalSec % 86400) / 3600);
+                minutesVal = Math.floor((totalSec % 3600) / 60);
+                secondsVal = Math.floor(totalSec % 60);
+                if (daysVal < 0) daysVal = 0;
+                if (hoursVal < 0) hoursVal = 0;
+                if (minutesVal < 0) minutesVal = 0;
+                if (secondsVal < 0) secondsVal = 0;
+            } else {
+                daysVal = 0;
+                hoursVal = 0;
+                minutesVal = 0;
+                secondsVal = 0;
+            }
+
+            dom.days.textContent = String(daysVal).padStart(2, '0');
+            dom.hours.textContent = String(hoursVal).padStart(2, '0');
+            dom.minutes.textContent = String(minutesVal).padStart(2, '0');
+            dom.seconds.textContent = String(secondsVal).padStart(2, '0');
+
+            // Progress
+            const pct = Math.round(percent);
+            dom.progressFill.style.width = pct + '%';
+            dom.progressPercent.textContent = pct + '%';
+
+            if (state.isComplete) {
+                dom.progressFill.classList.add('complete');
+            } else {
+                dom.progressFill.classList.remove('complete');
+            }
+
+            // Status message
+            const msg = dom.statusMessage;
+            const emojiSpan = msg.querySelector('.emoji');
+            const textSpan = msg.querySelector('span:last-child');
+
+            if (!state.startDate) {
+                emojiSpan.textContent = '⏳';
+                textSpan.innerHTML = 'Укажите дату начала и нажмите <strong style="color:#c9a84c;">«Обновить»</strong>';
+            } else if (state.isComplete) {
+                emojiSpan.textContent = '🎉';
+                textSpan.innerHTML =
+                    '<span class="highlight-text">ДЕМБЕЛЬ!</span> Альтернативная служба завершена! 🥳';
+                dom.orderStatus.textContent = 'освобождён от исполнения трудовых обязанностей и уволен с гражданской службы';
+            } else if (elapsed < 0) {
+                emojiSpan.textContent = '📅';
+                textSpan.innerHTML = `Служба начнётся через <span class="highlight-text">${Math.abs(elapsed)}</span> ${pluralDays(Math.abs(elapsed))}.`;
+                dom.orderStatus.textContent = 'ещё не приступил к исполнению обязанностей';
+            } else {
+                const remainDays = remaining;
+                emojiSpan.textContent = '⏳';
+                textSpan.innerHTML =
+                    `Осталось <span class="highlight-text">${remainDays}</span> ${pluralDays(remainDays)} из <span class="highlight-text">${totalDays}</span> дней. Держись, брат! 💪`;
+                dom.orderStatus.textContent = 'продолжает проходить альтернативную гражданскую службу';
+            }
+
+            // Order sign date
+            const signDate = new Date();
+            const signStr = signDate.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            const signEl = dom.orderSection.querySelector('.order-sign');
+            if (signEl) {
+                signEl.innerHTML = `— Начальник отдела кадров АГС<br /><span style="font-size:12px;color:#6a7a5a;">${signStr}</span>`;
+            }
+
+            // Celebration overlay
+            if (state.isComplete && !window._celebrated) {
+                window._celebrated = true;
+                dom.celebrationOverlay.classList.add('active');
+                launchConfetti();
+            } else if (!state.isComplete) {
+                window._celebrated = false;
+                dom.celebrationOverlay.classList.remove('active');
+                dom.confettiContainer.innerHTML = '';
+            }
+
+            // Update service type display
+            const monthsDisplay = months === 18 ? '18 месяцев (540 дней)' : '21 месяц (630 дней)';
+            document.querySelector('.header .subtitle').textContent =
+                `Альтернативная гражданская служба · ${monthsDisplay}`;
+        }
+
+        // ============================================================
+        //  CONFETTI
+        // ============================================================
+        function launchConfetti() {
+            const container = dom.confettiContainer;
+            container.innerHTML = '';
+            const colors = ['#c9a84c', '#f5e6b0', '#8b7a3e', '#e8d48a', '#d4b85a', '#ffd966', '#b8860b', '#daa520'];
+            const pieces = 120;
+
+            for (let i = 0; i < pieces; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti-piece';
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const size = 6 + Math.random() * 10;
+                const left = Math.random() * 100;
+                const duration = 2.5 + Math.random() * 3;
+                const delay = Math.random() * 2.5;
+                const rotate = Math.random() * 720;
+                const shape = Math.random() > 0.5 ? '50%' : '2px';
+                el.style.cssText = `
+                            left: ${left}%;
+                            width: ${size}px;
+                            height: ${size * (0.6 + Math.random() * 0.8)}px;
+                            background: ${color};
+                            border-radius: ${shape};
+                            animation-duration: ${duration}s;
+                            animation-delay: ${delay}s;
+                            transform: rotate(${rotate}deg);
+                            box-shadow: 0 0 6px rgba(201,168,76,0.3);
+                        `;
+                container.appendChild(el);
+            }
+
+            // Clean up after animation
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 6000);
+        }
+
+        // ============================================================
+        //  RECALCULATE FROM SETTINGS
+        // ============================================================
+        function recalculate() {
+            const startVal = dom.startDate.value;
+            const monthsVal = parseInt(dom.serviceType.value, 10);
+
+            if (!startVal) {
+                // If no date, use default
+                dom.startDate.value = CONFIG.defaultStartDate;
+                state.startDate = CONFIG.defaultStartDate;
+            } else {
+                state.startDate = startVal;
+            }
+
+            state.serviceMonths = monthsVal;
+            window._celebrated = false;
+            updateApp();
+        }
+
+        // ============================================================
+        //  TICKER (every second)
+        // ============================================================
+        let tickInterval = null;
+
+        function startTicker() {
+            if (tickInterval) clearInterval(tickInterval);
+            tickInterval = setInterval(() => {
+                updateApp();
+            }, 1000);
+        }
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        function init() {
+            // Set default date
+            dom.startDate.value = CONFIG.defaultStartDate;
+            dom.serviceType.value = String(CONFIG.defaultMonths);
+
+            // Events
+            dom.btnSet.addEventListener('click', recalculate);
+            dom.btnCelebrateClose.addEventListener('click', () => {
+                dom.celebrationOverlay.classList.remove('active');
+                dom.confettiContainer.innerHTML = '';
+            });
+
+            // Also recalculate on Enter key in date input
+            dom.startDate.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') recalculate();
+            });
+
+            // Initial calculation
+            recalculate();
+            startTicker();
+
+            // Extra: click on overlay background closes it
+            dom.celebrationOverlay.addEventListener('click', (e) => {
+                if (e.target === dom.celebrationOverlay) {
+                    dom.celebrationOverlay.classList.remove('active');
+                    dom.confettiContainer.innerHTML = '';
+                }
+            });
+        }
+
+        // Run on DOM ready
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+</body>
+</html>
